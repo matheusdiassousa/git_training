@@ -11,7 +11,7 @@ Bem, após adicionar nosso primeiro arquivo (que nesse caso foi o LICENSE mas pod
 
 > git add LICENSE.txt
 
-Este comando acima é de multipropósito ele serve para adicionar novos arquivos à staged area e adicionar arquivos já existentes que foram modificados à staged area.
+Este comando acima é de multipropósito ele serve para adicionar novos arquivos à staged area e adicionar arquivos já existentes que foram modificados à staged area. Também, quando excluimos algum arquivo precisamos "falar (adicionar)" à staged area que realmente estamos excluindo um arquivo da nossa nova versão.
 
 Depois, vamos fazer o commit:
 
@@ -46,5 +46,19 @@ O L significa Left Hand e R right hand... O valor aparecendo do lado esquerdo in
 >  M arquivo --> veja que há dois espaços em branco ali na lateral isso quer dizer que o arquivo foi alterado na working tree mas não foi adicionado à staging area.
 > M  arquivo --> nesse caso o arquivo foi modificado na staging area, ou seja, está adicionado para o commit. Preste sempre atenção à distância entre o codigo do status e o nome do arquivo, isso indica em qual lado da coluna está o codigo do status. Ou simplesmente uso o > git status para obter um status mais detalhado.
 
+------ Usando o GIT Ignore no Windows -------
+Talvez em alguma situação a gente queira ignorar algum arquivo quando usamos o git status (ou seja, não adicionaremos esse arquivo ao nosso repositório). Então para isso a gente pode criar um arquivo no nosso projeto, chamado > .gitignore <. Dentro desse arquivo vamos colocar o nome e a  extensão do arquivo à ser ignorado ou *.extensãoindesejada para ignorar todos os arquivos que terminam com aquela extensão... bem podemos usar outras capacidades do bash ou shell para identificar estes arquivos, mas não iremos falar disso aqui. Caso também não queiramos que o próprio arquivo .gitignore seja adicionado no nosso repositório podemos recursivamente declarar o proprio .gitignore dentro do arquivo .gitignore. Bem, no linux é mais fácil criar esse arquivo, mas no windows isso pode ser um pouco mais dificil, vamos ver oque podemos fazer:
+
+1° Podemos criar um arquivo .txt qualquer dentro da nossa pasta principal do repositório e escrever lá quais arquivos queremos que sejam ignorados. Depois disso, abrimos o terminal dentro desta pasta e usamos o comando para renomear o arquivo qualquer.txt, da seguinte forma
+
+> ren qualquer.txt .gitignore
+
+pronto nosso arquivo foi renomeado.
+
+2° Podemos abrir o terminal dentro da pasta e usar o comando de escrita de texto dentro de um arquivo, aqui é importante saber que se o arquivo destino que a gente especificou no comando não existir ele será criado automaticamente. Ou seja, caso ela exista ele so receberá o texto na sua ultima linha não escrita e se ele não existir ele será criado com o texto que a gente escreveu. Então o comando explicado é o seguinte:
+
+> echo "texto" > .gitignore
+
+pronto nosso arquivo .gitignore foi criado com a palavra --> texto <-- dentro dele... perceba que essa palavra texto pode ser simplesmente a regra de exceção ou ignorar para o git.
 
  
