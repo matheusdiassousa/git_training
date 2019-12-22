@@ -11,6 +11,8 @@ Bem, após adicionar nosso primeiro arquivo (que nesse caso foi o LICENSE mas pod
 
 > git add LICENSE.txt
 
+Este comando acima é de multipropósito ele serve para adicionar novos arquivos à staged area e adicionar arquivos já existentes que foram modificados à staged area.
+
 Depois, vamos fazer o commit:
 
 > git commit -m "Texto entre aspas que justifica o commit" 
@@ -24,4 +26,25 @@ Podemos ver o estado em que o git está através do comando
 Este comando mostra se algum arquivo foi modificado e não está sendo monitorado, ou, se todos os arquivos do projeto estão monitorados. Se a cor do arquivo estiver vermelha quer dizer que não está monitorado. Se aparecer em verde quer dizer que ele foi adicionado pelo comando > git add arquivo < e podemos fazer o commit para atualizar a versão do projeto. Se nenhum arquivo aparecer quer dizer que está tudo atualizado. O comando também mostra em qual ramo do projeto vc está trabalhando, se é um ramo paralelo ou se está trabalhando no ramo principal do projeto.
 
 Um informação importante sobre o comando > git add < : Se você faz uma alteração e adiciona o arquivo para a staged area e não executa o commit e depois altera esse arquivo e salva e faz o commit a versão do arquivo que irá ser adicionada será a com o conteúdo de quando você executou o comando git add.
+
+Existe um comando que faz ao mesmo tempo a adição dos arquivos modificados e realiza o commit que é o comando:
+
+> git commit -a
+
+Ou seja, ele vai mandar os arquivos alterados para a staged area, solicitar que você digite um texto para o commit e depois de finalizar o texto e apertar enter ele vai realizar ter atualizado a versão do seu projeto.
+
+Há um comando alternativo ao > git status < que é o > git status -s < Esse comando permite receber um informações sobre o repositório com informações mais resumidas. Os resultados em que os arquivos podem estar são:
+> M  arquivo --> Refere-se a um arquivo modificado
+> A  arquivo --> Adicionado para a staging area
+> ?? arquivo --> novo arquivo que não está sendo monitorado
+> MM arquivo --> Arquivo foi modificado, adicionado a stage area e depois modificado de novo.
+
+Existem duas colunas onde esses valores podem aparecer como ilustrado abaixo:
+> LR arquivo
+
+O L significa Left Hand e R right hand... O valor aparecendo do lado esquerdo indica o status do arquivo referente à staging area e do lado direito referente à working tree. Exemplo:
+>  M arquivo --> veja que há dois espaços em branco ali na lateral isso quer dizer que o arquivo foi alterado na working tree mas não foi adicionado à staging area.
+> M  arquivo --> nesse caso o arquivo foi modificado na staging area, ou seja, está adicionado para o commit. Preste sempre atenção à distância entre o codigo do status e o nome do arquivo, isso indica em qual lado da coluna está o codigo do status. Ou simplesmente uso o > git status para obter um status mais detalhado.
+
+
  
