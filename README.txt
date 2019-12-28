@@ -436,6 +436,16 @@ Bem, caso usemos o comando > git log --oneline --decorate < nós só veremos infor
 Com esse comando veremos inclusive um ramo des-conexo criado a partir de uma tag annotated.
 Esse sim é um comando bem legal para a gente não ficar perdido.
 
+No final um ramo é somente um arquivo SHA-1 que aponta para uma foto do seu projeto... isso então faz com que criar ramos seja muito leve no quesito de ocupar espaço e rápido no quesito de processar o comando. Por isso o modo com o GIT faz um ramo é chamado de "killer feature" pq outros gerenciadores não fazem isso assim. Eles normalmente duplicam seus arquivos para outro diretório ou seja, você ocupa espaço duas vezes com coisas iguais que não divergem de si quando comparamos um ramo com outro.
+
+Vimos que o processo de criar um ramo e mudar para ele exige dois comandos... Mas, existe um comando que permite ao mesmo tempo criar e mudar para esse ramo, que é o seguinte:
+
+> git checkout -b "nome do ramo"
+
+______________ Criando ramos e depois os fundindo. (Branching and Merging)
+
+
+
 
 
 
