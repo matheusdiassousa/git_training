@@ -444,6 +444,32 @@ Vimos que o processo de criar um ramo e mudar para ele exige dois comandos... Ma
 
 ______________ Criando ramos e depois os fundindo. (Branching and Merging)
 
+Primeiro vamos entender em qual situação um Merging pode ser usado... Imagine que estamos trabalhando em um e estamos no ramo "master", o projeto trata-se de um aplicativo disponível para usuários comuns, então você como dev recebe um alerta do seu time de que há um problema para efetuar a troca de conta no aplicativo. Bem, você precisa realizar o concerto deste bug, mas não irá fazer isso no seu ramo master, pq isso pode danificar todo o seu projeto. Então oque podemos fazer? Bem podemos criar um ramo a partir do ramo master, mudar para esse novo ramo que chamaremos de "bugfix" e vamos realizar neste ramo secundário o concerto do bug e testar se está tudo ok nele. Depois que tivermos certeza que concertamemos esse problema, podemos então fundir esse ramo "bugfix" com o ramo "master" que é o ramo principal de desenvolvimento do nosso projeto. Bem, aqui é importante saber que precisamos ter os dois ramos atualizados, ou seja, não pode ter nada para ser commitado seja fora ou dentro da staging area... pq se tiver em uma dessas condições o git não vai deixar realizar o branch.
+
+Para fazer o merging nós precisamos ir para o ramo que queremos "puxar" os arquivos do outro "ramo"... para entender melhor: nós temos 2 ramos, um "master" e um "bugfix" que foi criado para solucionar e testar o bug... um vez solucionado queremos mandar a versão dos arquivos do "bugfix" para o ramo "master". Então, damos um checkout para o ramo master e usamos o comando à seguir para fazer o merging:
+
+>git merge bugfix //comentário: veja que depois de "merge" vem o nome do ramo que estamos puxando e fundindo os arquivos.
+
+Há um tipo de merge chamado "fast-foward" que trata-se de quando realizamos um merge entre dois commits que estão conectados na linha do tempo. Como assim? Se pensarmos que master é um commit no tempo 2 e bugfix é um ramo com commit na linha do tempo 3... então na realidade o commit de bugfix está logo na frente do master. Então um merge fast-foward é só o git mudando o apontador do ramo master para o mesmo commit do bugfix... em linhas grossas: os ramos master e bugfix apontam para o mesmo commit neste momento. Isso acontece somente quando um commit consegue alcançar o outro por estas vias. Simples não é?! Bem, só tenha em mente que podemos dar um merge entre commits separados por longas linhas temporais no git.
+
+Bem, como agora você já tem o bug resolvido e não precisa mais do branch bugfix... podemos apagar esse branch com o comando:
+
+> git branch -d bugfix //comentário: de novo, bugfix pode ser o nome de qualquer repositório que vc queira apagar.
+
+Vamos agora entender um pouco sobre o merge de commits que estão distantes na linha temporal. Quando temos dois ramos que estão distantes um do outro por alguns commits, o git não pode fazer um fast foward merge, pq os commits atuais de cada ramo possuem arquivos diferentes e não tem um commit ancestral direto entre eles dois. Na realidade eles tem ancestrais que tem ancestrais em comum. É como  primos que possuem os avós como ancestrais diretos, onde seu pai é seu ancestral direto e seu tio é seu ancestral indireto. Então oque o git precisa fazer é ir até esse commit ancestral direto e reunir as informações e alterações destes arquivos para que assim possa criar um novo commit um ancestral filho direto destes dois commits que estão sendo fundidos. Assim como dito anteriormente irá existir agora um novo commit que é a reunião//fusão de informações dos commits anteriores.
+
+Bem, como agora vc tem as infos desse seu branch secundário que foi puxado as informações... podemos exclui-lo como já sabemos.
+
+O merging nem sempre irá ser executado tão pacificamente assim, as vezes... ele dá alguns conflitos de informações e reclama. Vamos supor que você mudou o mesmo arquivo de forma diferente nos dois ramos... ou seja, escreveu algo lá no arquivo1 no ramo master e escreveu outra coisa no mesmo do arquivo no ramo bugfix... por exemplo... então o git não irá realizar o merge e vai te solicitar para solucionar o problema do conflito.
+
+Para ver onde o conflito ocorre, podemos rodar um > git status <
+
+Depois de resolver os conflitos precisamos somente, dar um git add nos arquivos alterados. Enviar os arquivos para a staging area faz o git entender que os arquivos estão marcados como resolvido.
+
+
+
+
+
 
 
 
