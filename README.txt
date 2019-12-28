@@ -357,7 +357,70 @@ Caso queira ver a versão dos arquivos que a tag está apontando podemos usar o co
 
 > git checkout [nome da tag]
 
-Mas, o ramo que você está trabalhando
+A questão aqui é, que após este comando você vai mudar o sua versão de trabalho para o commit que vc escolheu... então tudo vai mudar inclusive o log que você tinha. Nesse caso é como voltar no tempo. Só que você está em um modo "des-anexado" oque quer dizer que é como vc voltar para o commit que vc selecionou no checkout e a partir daí vc pode fazer mudanças e ir para um outro branch sem afetar o seu ramo anterior... 
+
+----- até aqui eu ainda não sei como voltar para o repositório anterior.... acho que deu bosta, no sentido de ter perdido todos os meus logs...
+
+____________ Criando apelidos para os comandos para evitar digitar todo o texto sempre
+Podemos fazer apelidos para os comandos com os seguintes comandos:
+
+> git config --global alias.[nome do apelido] 'comando que vai ser apelidado'
+
+Por exemplo vamos fazer um apelido para o comando que mostra todos os commits de forma resumida... se para ver os commits reduzidos usamos o comando > git log --pretty=oneline < agora vamos usar
+> git logres <... então vamos criar esse apelido usando o comando acima citado acima:
+
+> git config --global alias.logres 'log --pretty=oneline'
+
+_____________ Git Branching
+
+Aqui vamos ver como funciona a ramificação de projetos. O manual do git diz que esse recurso é um dos seus melhores recursos e oque realmente justifica utilizar o git ao invés de outro VCSs...
+
+Para entender as ramificações precisamos lembrar como funciona os commits do git... quando a gente dá um commit o que git faz é criar um objeto que aponta para uma "imagem" exata do projeto antes do commit. O commit é uma espécia de "porta" que dá acesso exatamente à esta imagem tirada do projeto.
+
+Então cada commit é uma imagem de todo o projeto, não somente do arquivo mudado... mas de tudo que foi adicionado para a staged area e commitado.
+
+Este objeto (commit) mostra quem foi que o executou, endereço de email do author, hora e etc. Caso o commit venha a partir de uma "fusão" de outros commits então este será um commit Pai que mostra a união de outros commits executados por outras pessoas ou versões de arquivos.
+
+Quando adicionamos os arquivos à staged area o git vai criar um SHA-1 para cada arquivo que é uma sequência numérica resultado do conteúdo do arquivo... então um arquivo no mesmo endereço com mesmo nome e mesmo conteúdo tem que ter o mesmo SHA-1 e assim o git consegue comparar um arquivo ele mesmo em outro momento para ver se houve modificações ou não. Bem, quando damos o commit oque git faz é guardar no repositório o SHA-1 referente à cada arquivo guardado... ele chama cada SHA-1 de cada arquivo de "BLOBS". Quando realizamos o commit o repositório git guarda a seguinte quantidade de arquivos:
+
+-> X Quantidade de blobs (1 para cada arquivo adicionado)
+-> 1 tree (uma arvore que lista o conteúdo do diretório e especifica qual arquivo equivale a cada blob)
+-> 1 commit (que é um objeto que aponta para arvore)
+
+Então com esses arquivos o GIT consegue remontar todo conteúdo que foi salvo naquele commit.
+
+O primeiro commit ele só tem os arquivos citados acima... mas o segundo commit e assim sucessivamente vai apontar para o commit anterior e criar a mesma lógica de arquivos citadas anteriormente... por exemplo:
+
+primeiro commit de todos:
+
+
+-> X Quantidade de blobs (1 para cada arquivo adicionado)
+-> 1 tree (uma arvore que lista o conteúdo do diretório e especifica qual arquivo equivale a cada blob)
+-> 1 commit (que é um objeto que aponta para arvore)
+
+
+Segundo commit:
+
+
+-> X Quantidade de blobs (1 para cada arquivo adicionado)
+-> 1 tree (uma arvore que lista o conteúdo do diretório e especifica qual arquivo equivale a cada blob)
+-> 1 commit (que é um objeto que aponta para arvore)
+-> 1 objeto que aponta para o commit anterior (nesse caso o primeiro commit de todos)
+
+Então o git na realidade sempre dá um caminho para a versão anterior, fazendo com que tenhamos pontos temporáis para acessar o nosso projeto.
+
+O ramo que estamos no git é chamado de "master" é só um nome para dizer onde estamos mesmo... mas é um ramo como qualquer outro no seu repositório...
+
+_______vamos agora criar um ramo
+
+Para criar um ramo (outra linha temporal do projeto) podemos usar o comando:
+
+> git branch [nome do ramo]
+
+
+
+
+
 
 
 
