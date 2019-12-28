@@ -417,6 +417,16 @@ Para criar um ramo (outra linha temporal do projeto) podemos usar o comando:
 
 > git branch [nome do ramo]
 
+Esse comando só cria um novo ramo, não te leva para trabalhar nesse novo ramo criado
+
+Para saber em qual ramo estamos, quando usamos o > git log < ele mostra em qual ramos estamos ao utilizar a palavra HEAD:
+
+HEAD -> nome do ramo
+
+Para ver o ramo que estamos como dito anteriormente podemos usar:
+
+> git log --oneline --decorate
+
 
 
 
