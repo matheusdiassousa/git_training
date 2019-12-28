@@ -427,6 +427,16 @@ Para ver o ramo que estamos como dito anteriormente podemos usar:
 
 > git log --oneline --decorate
 
+Quando os ramos estão no mesmo ponto de commits, quando vemos o log eles estão apontando para o mesmo commit. Mas, se fizermos alguma mudança e commitamos somente o ramo que estamos naquele momento apontará para aquele commit. É importante saber que quando nos movemos de branch na realidade estamos indo para o commit que aquele ramo teve por último, ou seja, estamos também andando na linha do tempo de mudanças nos nossos arquivos.
+
+Bem, caso usemos o comando > git log --oneline --decorate < nós só veremos informações do ramo conectado no commit que estamos no presente momento... Por exemplo se a partir de um commit no ramo "master" damos um branch para "ramo2"... e damos um checkout para "ramo2" então com o log veremos os ramos que antecessores à ele mesmo... mas se autualizamos o ramo2 com um commit que só ele tem e depois damos um checkout para o ramo "master" e usamos o log, não veremos o "ramo2" porque ele é uma linha do tempo que não existe para o "master" ele está no futuro e ainda não aconteceu. Então, caso queiramos ver todos os ramos e commits na linha do tempo do nosso repositório... Ou seja, não veremos a partir da visão do ramo que estamos mas sim de todo o projeto podemos usar o seguinte comando:
+
+> git log --oneline --decorate --graph --all
+
+Com esse comando veremos inclusive um ramo des-conexo criado a partir de uma tag annotated.
+Esse sim é um comando bem legal para a gente não ficar perdido.
+
+
 
 
 
