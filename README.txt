@@ -317,10 +317,48 @@ Ainda podemos usar outro argumento para resumir as infos sobre a tag, como:
 
 	
 
+Para criar uma lightweight tag precisamos só usar o comando de tagging sem adição de argumentos extras... como:
 
+> git tag [nome da tag]
 
+Lembrando que este tipo de tag somente adiciona uma marcação para o commit, não diz quem fez a tag, que horas...etc e tal. O comando > git show < para essa tag só vai mostrar o nome da tag e as infos do commit.
 
-Seção 2.5 fetching and pulling
+__________- Adicionando tags em commits passados.
+Podemos dar um > git log --pretty=oneline < ver todos os commits e pegar o SHA-1 do commit desejado e usar o seguinte comando:
+
+> git tag -a [nome da tag] [SHA-1 do commit]
+
+Mas qual é o SHA-1... lembramos primeiro que quando commitamos o git gera um HASH para identificar o commit e o conteúdo do projeto. O SHA-1 é essa sequência de numeros e letras que aparecem do lado esquerdo do texto do commit. Precisamos pegar no mínimo os 7 primeiros caracteres do Hash. Esse comando acima vai exigir a abertura do editor de texto para comentar a tag... para evitar essa novela toda, podemos adicionar o argumento de adição de mensagem da seguinte forma:
+
+> git tag -a [nome da tag] [SHA-1 do commit] -m "texto que a gente quer colocar"
+
+__________________ Compartilhando Tags
+
+Por padrão quando realizamos um push o git não envia as tags que criamos no nosso versionamento local. Para isso precisamos subir a tag manualmente, ou ainda podemos subir todas as tags existentes que ainda não estão no repositório remoto. Podemos fazer essas duas coisas com os comandos listados respectivamente abaixo:
+
+> git push origin [nome da tag]
+
+> git push origin --tags
+
+Talvez seja importante dizer que o git não distingue somente um tipo de tag para fazer o push. Ele irá enviar os dois tipos. Após usar estes comandos as tag estarão aplicadas também ao repositório remoto.
+
+____________ Deletando Tags
+
+Para deletar uma Tag localmente podemos usar o comando:
+
+> git tag -d (ou --delete) [nome da tag]
+
+E para fazer isso no repositório online... também precisamos deletar lá
+
+> git push origin --delete [nome da tag]
+
+__________ Checking Out Tags
+Caso queira ver a versão dos arquivos que a tag está apontando podemos usar o comando:
+
+> git checkout [nome da tag]
+
+Mas, o ramo que você está trabalhando
+
 
 
 
