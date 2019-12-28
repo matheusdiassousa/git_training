@@ -176,8 +176,151 @@ Então assim, usamos o --amend:
 
 > git commit --amend
 
+Bem, neste momento o git vai abrir o seu gerenciador de texto configurado e após isso, ele vai espera que vc altere a mensagem do commit passado. Caso você só feche o arquivo, ele vai dar continuidade e adicionar seu arquivo faltante ao último commit sem alterar a mensagem.
+
+IMPORTANTE - Para que o git consiga abrir um programa ele precisa de permissão de usuário, então, você deve usar um PowerShell aberto como administrador... assim ao usar o GIT ele terá permissões de adm para executar ações que exijam graus de permissão maiores.
+
+Agora vamos ver como retirar um arquivo em específico da staged area. Isso pode ser feito com o seguinte comando:
+
+> git reset [arquivo]
+
+Com esse comando, podemos tirar um arquivo que foi add pelo comando > git add [arquivo] <... Bem simples né?!
+
+Podemos desfazer uma modificação local em um arquivo substituindo o arquivo alterado pela sua ultima versão de commit... vamos entender melhor:
+Vamos supor que vc tenha um arquivo de texto com a frase "antes do restore" dentro deste arquivo. Supodondo que este seja um conteúdo importante, em algum momento você faz alguma alteração neste arquivo... trocou a frase para "antes do restore 1000", mas, na realidade você fez besteira e já salvou este arquivo. Então, você quer voltar para o antigo conteúdo do arquivo... podemos então fazer o git substituir este arquivo atual para sua versão do ultimo commit com o seguinte comando:
+
+> git checkout [arquivo]
+
+Entenda que tudo que foi commitado pode ser retornado. Você pode até mandar esta versão do projeto que está com este arquivo alterado para outro ramo (ou seja, o mesmo projeto em uma realidade paralela) e assim continuar no seu projeto principal com seu arquivo na fase inicial. Bem, podemos ver que o git é muito poderoso e que suas funcionalidades podem não fazer tanto sentido agora... mas, na realidade você verá que são muito úteis em projetos complexos no qual você precisa testar e manter diferentes versões do mesmo projeto. Um circuito com valores e resultados diferentes: por exemplo, para quando você juntar com circuitos posteriores você possa escolher qual deles teve o melhor desempenho.
+
+--------> TRABALHANDO COM PROJETOS REMOTOS
+
+Bem, primeiro oque é um projeto remoto? É um projeto que está hospedado em outro computador... como por exemplo um servidor que é acessado pela internet.
+Você pode trabalhar em vários GIT ao mesmo tempo sem conflitar dados entre eles. (Se você não fizer uma besteira bem doida, tudo é possível na terra.)
+
+Um repositório GIT que não é seu pode ser somente de Leitura onde você só consegue puxar dados, como pode também ser de Leitura/Escrita no qual você pode enviar e receber informações.
+
+**Vendo seus repositórios remotos
+
+> git remote
+
+Este comando acima vai listar os repositórios remotos no qual você configurou para ter acesso... com por exemplo deu um clone. Se não mostrar nada é pq você não está trabalhando com nenhum.
+
+Adicionar o comando "-v" mostra o endereço url do repositório:
+
+> git remote -v
+
+Bem agora vamos aprender como adicionar um desses repositórios... Então, primeiro deve lembrar que a gente deve estar dentro de uma pasta (via terminal) no qual queremos hospedar localmente os arquivos deste projeto. Então usamos o comando:
+
+> git remote add <pequeno_nome_para_identificar_o_repositorio> <url_do_repositorio>
+
+Esse pequeno nome que usamos para identificar o repo, pode ser usado no terminal no lugar de toda a URL do projeto. De agora em diante vamos chamar o nome que demos para o repositorio de de <repo_id>
+
+Após fazer essa configuração onde você disse pro GIT que agora irá trabalhar nesse repositório... você precisa baixar para sua pasta local todos os arquivos que vc não tem ainda... Então, para isso, usamos o comando:
+
+> git fetch <repo_id>
+
+Esse comando trás todas as informações do projeto, inclusive de ramos do projeto. A partir daqui você pode trabalhar em um ramo do projeto ou no ramo principal.
+
+O comando >fetch< vai trazer arquivos que você ainda não tem... mesmo que sejam todos.
+
+Se você clona algum projeto, você terá esse repositório adicionado para você localmente... então se você usar o comando:
+
+> git fetch origin
+
+Ele vai buscar novos projetos ou arquivos a partir da vez que você deu o seu > git clone < perceba que origin na realidade é um id para repositório clonado... então quando usamos origin dentro da pasta de um projeto clonado ele na realidade está indo atrás do endereço referente ao repositório.
+É importante salientar que o comando >fecth< somente faz o download dos arquivos para sua pasta local... você ainda precisa fazer manualmente a adição destes arquivos no seu projeto ou seja... dar um "merge" com seus arquivos versionados.
+
+Podemos usar um comando para buscar arquivos no ramo de repositório que estamos trabalhando e ainda assim fazer a fusão desses arquivos com seus arquivos alterados localmente. Para isso podemos usar o comando:
+
+> git pull
+
+Ou seja, ele irá buscar os arquivos no repositório clonado e fundir com os seus arquivos... então tudo é feito de uma única vez.
+
+___________Enviando arquivos para um server remoto
+
+Bem, a certo ponto do seu projeto você deseja disponibiliza-lo em algum repositório online essa ação chamado de "push"... se para baixar os arquivos chamamos de "pull", enviar ou "empurrar" os arquivos para a núvem... chamamos de "push". Para isso usamos o seguinte comando, preste atenção nos argumentos:
+
+> git push [remote] [branch]
+
+Bem, em remote é o endereço que tem algum id... normalmente é o "origin" e o branch normalmente estamos trabalhando no "master"... Então o comando fica assim:
+
+> git push origin master
+
+Então estamos dizendo para o git enviar os arquivos commitados para o endereço origem do projeto e adicionameros ou atualizaremos os arquivos no ramo "master" ou principal do repositório online.
+
+Este comando só irá funcionar se você tiver permissão de escrita no respositório que vc está tentando dar push... Outra coisa importante é que você só poderá dar push se seu repositório local tiver as ultimas atualizações do repositório online... perceba que isso é essencial pq você poderia estar sobrescrevendo a ultima atualização do seu projeto com uma versão ultrapassada. Isso pode acontecer quando se trata de um projeto com várias pessoas trabalhando nele. Então, antes de dar o push é importante dar um pull... para ver se algo mudou e atualizar o seu projeto.
+
+Para ver informações sobre seu repositório online, como quais sãos os ramos, em qual ramo você está trabalhando e quando você der pull ou push quais serão os ramos que serão baixados e atualizados. O comando é:
+
+> git remote show origin
+
+_________________ Renomeando e Removendo Remotes
+
+Para mudar o id de um remote, podemos usar o comando:
+
+> git remote rename [id_antigo] [id_novo]
+
+Para verificar a mudança, podemos usar:
+
+> git remote
+
+Para remover algum repositório remoto, por alguma razão como o repositório não será mais disponibilizado naquele server, não estará mais disponível para colaboração de alguém... e por aí vai, podemos usar o comando:
+
+> git remote rm [id]
+
+Depois de usar esse comando, todas as configurações para aquele repositório remoto serão excluídos... novamente podemos checar isso pelo comando:
+
+> git remote
+
+Lembrando que o git remote mostra quais repositórios vc está trabalhando dentro do seu projeto...
+
+___________Tagging
+
+Tags são como etiquetas que você usa para marcar o seu projeto... Bem, normalmente é usado para marcar a versão do seu projeto, vamos supor que vc lançou a primeira versão... após o ultimo commit daquela versão você pode adicionar uma tag. Assim, com essa tag você facilmente sabe identificar um ponto importante do seu projeto.
+
+Primeiro precisamos saber como listar tags... podemos usar o comando:
+
+> git tag //comentário: podemos adicionar no final o argumento "--list" ou "-l" mas é opcional.
+
+Esse comando vai mostrar as tags em ordem alfabética. Podemos também listar as tags a partir de uma específica como:
+
+> git tag -l "nome que identifica uma tag"
+
+Então essa combinação de comandos vai mostrar tags que correspondem ao texto entre aspas.
+
+__________Criando as tags
+
+Existem dois tipos de tags no git são elas:
+
+--> lightweight : essa tag é a mais simples, ela não muda e serve somente para marcar um commit.
+
+--> annotated : essa tag é a mais completa e guarda todos os objetos referentes ao seu repositorio naquela tag... como, author, data, e salva os arquivos para serem comparados. O git recomenda taggear com esse tipo de tag. Mas, caso você não queira guardar tantas informações naquele momento, seja por que ainda não é importante ou seja por outro motivo... use a tag simples. Mas veja que a tag leve não guarda nem author nem hora... mas sabemos que ela aponta pra um commit que tem informações como author, hora e arquivos salvos para comparação. O problema é que essas infos são do commit não de quem fez a tag.
+
+Criando a tag annotated... é simples podemos usar o comando:
+
+> git tag -a [nome da tag] -m "texto que fala algo sobre a tag" //comentário: se vc não colocar o argumento -m o git irá abrir o seu editor de texto configurado para que vc escreva algo lá... ou simplesmente salve sem escrever nada.
+
+então já sabemos que podemos listar as tags existentes com o comando:
+
+> git tag -l
+
+E podemos ver informações sobre nossa tag com o comando:
+
+> git show [nome_da_tag]
+
+Que irá mostrar informações interessantes sobre nossa tag...
+
+Ainda podemos usar outro argumento para resumir as infos sobre a tag, como:
+
+> git show [nome_da_tag] -s //comentário: como já usamos no "git status -s"
+
+	
 
 
+
+
+Seção 2.5 fetching and pulling
 
 
 
