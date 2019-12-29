@@ -462,9 +462,48 @@ Bem, como agora vc tem as infos desse seu branch secundário que foi puxado as in
 
 O merging nem sempre irá ser executado tão pacificamente assim, as vezes... ele dá alguns conflitos de informações e reclama. Vamos supor que você mudou o mesmo arquivo de forma diferente nos dois ramos... ou seja, escreveu algo lá no arquivo1 no ramo master e escreveu outra coisa no mesmo do arquivo no ramo bugfix... por exemplo... então o git não irá realizar o merge e vai te solicitar para solucionar o problema do conflito.
 
-Para ver onde o conflito ocorre, podemos rodar um > git status <
+Para ver em que arquivo o conflito ocorre, podemos rodar um > git status <
+Então se a gnt abrir o arquivo conflituoso, lá teremos texto marcando o conflito entre os arquivos. Veja para imagens isso é mais complexo mesmo que a imagem seja um código ainda assim será difícil decifrar isso. Então resolver este conflito pode ser um pouco mais complicado em casos especiais de arquivos que não vamos abordar aqui.
 
-Depois de resolver os conflitos precisamos somente, dar um git add nos arquivos alterados. Enviar os arquivos para a staging area faz o git entender que os arquivos estão marcados como resolvido.
+Depois de resolver os conflitos precisamos somente, dar um git add nos arquivos alterados. Enviar os arquivos para a staging area faz o git entender que os arquivos estão marcados como resolvido e para terminar o merge nós temos que dar um commit. Vamos olhar agora nosso tree e ver com qual aparência ela está agora:
+
+Vemos então que há agora um ancestral filho comum aos dois ramos... E se quisermos podemos excluir o ramo secundário ao master. Fica à seu critério!
+
+_______________BRANCH MANAGEMENT
+
+Para ver os ramos que existem de uma forma mais simples, podemos usar o comando:
+
+> git branch
+
+E caso queiramos mais detalhes como o ultimo commit de cada branch podemos usar:
+
+> git branch -v
+
+Podemos ver quais ramos foram fundidos com o ramo no qual estamos atualmente com o commando:
+
+> git branch --merged
+
+E para ramos que não demos merge, podemos usar
+
+> git branch --no-merged
+
+Ramos que já demos merged normalmente são seguros de serem excluidos... No entanto se tertarmos deletar um ramo que ainda não demos merge, o git vai nos dizer que não pode fazer isso pq esse conteúdo não está seguro para ser deletado, visto que não foi adicionado ao seu ramo principal.
+Bem, então para isso podemos fazer duas coisas:
+
+1 - Realizar o merge
+2 - Se soubermos que é seguro, podemos forçar a exclusão com o seguinte comando:
+
+> git branch -D [nome_do_ramo] //comentário: veja que quando usamos > git branch -d [nome_do_ramo] <
+o git não deixa a gente excluir, então usar o "-D" é uma forma de dizer à ferramenta que independente do que ela acha ela executar nosso comando.
+
+Ainda para vermos sobre ramos que não foram fundidos, podemos perguntar ao git quais arquivos dentro deste ramo não foram fundidos... então, para isso podemos usar o seguinte comando:
+
+> git branch --no-merged [nome_do_ramo]
+
+
+
+
+
 
 
 
