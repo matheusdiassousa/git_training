@@ -659,7 +659,10 @@ Caso você tenha uma repositório local... ou seja, tudo começou sendo feito na su
 
 3 - copiamos a url desse repositorio remoto e usamos o seguinte comando:
 
-> git remote add origin remote repository URL
+> git remote add [nome do repo] URL
+
+> git push --set-upstream [nome do repo]
+
 
 
 
