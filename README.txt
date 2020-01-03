@@ -500,11 +500,152 @@ Ainda para vermos sobre ramos que não foram fundidos, podemos perguntar ao git q
 
 > git branch --no-merged [nome_do_ramo]
 
+________ Talvez seja interessante adicionar um conteúdo que fale sobre modos de como projetos são gerenciados no git, no sentido de criar ramos para diferentes objetivos, como testar uma ideia... e por aí vai.
+
+________ REMOTE BRANCHES
+
+Toda vez que nos conectamos à internet o git baixa informações para seu repositório local sobre estados dos seus ramos no repositório remoto, de forma que ele sempre esteja atualizado sobre quais os estados dos ramos online. De modo que você não sobre-escreva uma versão do projeto que foi atualizada por alguém que colabora com seu projeto.
+
+Caso queira compartilhar um ramo para o servidor remoto, mas não queira compartilhar todos os ramos, por algum motivo... você pode usar o comando:
+
+> git push [remote_name] [branch_name]
+
+Bem, quando adicionamos um ramo para um repositório online que somente nós tínhamos no começo então quando um colaborador usar o git pull ele só terá a indicação do ramo ele ainda precisa dar merge desse ramo com o seu workflow local. Isso pode ser feito com o comando:
+
+> git merge origin/[new_branchname]
+
+Caso você dê clone em um projeto e queira trabalhar somente em um ramo específico, você pode usar o comando:
+> git checkout -b [branchname] origin/[branchname]
+ou
+> git checkout --track origin/[branchname]
+
+Se você quiser que esse ramo remoto seja chamado por um apelido diferente do ramo online você pode usar o comando:
+
+> git checkout -b [nomelocal] origin/[branchname]
+
+Se você criou um ramo local e depois quer que essa ramo "monitore" os arquivos de um ramo remoto, você pode usar o comando:
+
+> git branch -u origin/[branchname]
+
+Ou seja, agora o ramo que vc está como "head" vai monitorar os arquivos estão no ramo "branchname" no endereço "origin".
+
+Para ver quais as configurações de "monitoramento remoto" cada ramo está seguindo, podemos usar o comando:
+
+> git branch -vv
+
+Quando vemos o resultado deste comando podemos ter três mensagens após a informação do endereço remoto e o ramo remoto que o nosso ramo local está monitorando. As mensagens são:
+
+1 - ahead x - ahead quer dizer que o ramo local está com "x" quantidades de commits na frente do ramo online... ou seja, seria legal atualizar o ramo online executando um push.
+2 - behind x - behind quer dizer que o ramo local está com "x" quantidades de commits atrás do ramo online... então, seria bom atualizar nosso ramo local executando um pull.
+3 - ahead x, behind y - bem aqui a gente já sabe então, que nosso ramo local está à frente do ramo online com "x" commits e atrás com "y" commits. Nesse caso é melhor atualizar nosso ramo local primeiro e depois atualizar o ramo online, para que a gente não sobre escreva o trabalho de outra pessoa.
+
+É importante dizer que essa informação mostrada pelo comando atrás nos está respondendo baseado nas informações locais que temos da ultima vez que executamos um " fetch "... ou seja, se passaram alguns minutos ou horas e há a possibilidade das informações remotas terem mudado, então é muito importante dar um fetch antes... como por exemplo da seguinte forma:
+
+> git fetch --all; git branch -vv
+
+Agora assim, temos uma informação atualizada. Bem, é bom lembrar que o " fetch " só buscar informações atualizadas para você, ele não pega os arquivos online e altera seus arquivos locais você precisa fazer isso dando um merge... Mas, caso você execute um " git pull" ele irá fazer as duas coisas ao mesmo tempo, no entanto, este comando não é tão explicito como executar uma sequência " fetch + pull "... Fica ligado nessa parada!
+
+Se você quiser deletar um ramo online, por seja qual lá for o motivo, você usar o seguinte comando:
+
+> git push origin --delete [branchname]
+
+É bom saber que o git vai apagar o apontador para aquele ramo com seu commit... mas o arquivo ainda vai ficar lá por algum tempo. O tempo de permanência depende do fornecedor de repositórios online.
 
 
+___________GIT REBASING
+Esse rebase me parece bastante complicado. Mas, vamos tentar explicar. Basicamente quando a gente usa o merge, oque fazemos é pegar dois branches que em algum momento tem um ancestral comum, ir até esse ancestral e comparar todas as diferenças entre arquivos e depois unir estes arquivos em um só commit. No entanto, as linhas do tempo ainda sobram. Ou seja, ainda é possível acessar os ramos paralelos antes do merge. O rebase é como se esse ramo paralelo que tem seus commits específicos tivessem sido feitos na linha principal do commit master que originou as ramificações. Imagine que temos três linhas do tempo de commits, uma principal chamada master, uma lateral chamada segunda, terceira. Então a linha principal continua com seus commits e do mesmo modo as outras linhas. Em algum momento terminamos as atualizações no ramo "segunda" e usamos o rebase da segunda dentro da linha "master". Isso quer dizer que os commits da linha segunda, serão movidos para uma arquivo temporário e apagados da linha tempo. Então serão criados a mesma quantidade de commits que existiam na linha segunda e estes serão adicionados na linha master, com o master com arquivos agora do rebase. É como se fosse um merge, mas há uma re-organização da linha do tempo. Na verdade o rebase parecer ser utilizado para manter a limpeza ou estética de commits do projeto, para não haver vários ramificações. Como usamos o rebase?
+
+1- entramos no ramo paralelo que queremos "mover" os commits para o ramo destino
+
+> git checkout [ramo_paralelo]
+
+2- então usamos o comando > rebase < para indicar o destino destes commits
+
+> git rebase [ramo_destino]
+
+Como o seu master está em um commit agora atrasado em relação à sua propria linha do tempo, podemos leva-lo para o commit mais atualizado (que é a união do master com os commits do ramo paralelo que foi apagado) com o seguinte comando:
+
+> git checkout [ramo_rebased] //comentário: no nosso caso foi o master
+
+> git merge [ramo_paralelo]
+
+Não há diferença no quesito "arquivos resultantes" entre o rebase e o merge
+
+Agora há uma outra possibilidade que é dar rebase de um ramo que é ramificação de uma ramificação. Ou seja, vamos supor que um terceiro ramo é um sub-ramo da linha principal, ou seja, o ramo principal tem um commit que dá origem a um ramo... este ramo com seu commit inicial dá origem a outro ramo. Assim, esse terceiro ramo tem um ancestral que é ancestral da linha principal. Agora, vamos supor que queiramos mandar esse terceiro ramo para o ramo principal, mesmo que eles não tenha uma conexão tão direta assim. Deste modo, podemos usar o seguinte comando:
+
+> git rebase --onto [ramo_destino] [ramo_pai_do_terceiro_ramo] [terceiro_ramo]
+
+na realidade o comando assim será algo mais ou menos assim > git rebase --onto master segundo terceiro
 
 
+Para entender melhor, o ramo_pai tem um commit no inicio da sua linha do tempo que dá origem ao terceiro_ramo e o ramo_destino tem um commit que deu origem ao commit inicial da linha do tempo do ramo_pai. Veja que o comando está dizendo assim: "pegue os commits do terceiro_ramo que são diferentes do ramo_pai e mande para a linha do tempo do ramo_destino". Parece uma bagunça mas dá certo...haha. O resultado disso é o ramo_destino agora terá no final da sua linha do tempo os commits do terceiro_ramo, como se eles tivessem sido feitos anteriormente nessa linha tempo. Não esqueça de dar merge entre o commit que está o ramo_destino e o commit que está o terceiro_ramo...assim eles estarão no mesmo commit. Isso quer dizer que se você não fizer isso... se vc der checkout para o ramo_destino ele estará atrasado em relação sua propria linha do tempo. Quem está mais atualizado no momento é o terceiro_ramo, mas, lembre-se que isso pode ser confuso em um projeto porque o terceiro_ramo foi criado para adicionar algum recurso paralelo, e o o ramo principal normalmente é o "master". Isso quer dizer que se algum colaborador quiser ter os arquivos na posição oficialmente mais atualizada ele vai entar no "master", então caso vc atualize oficialmente o master tem que acompanhar esse commit.
 
+No final, quando o ramo_pai tiver pronto podemos usar o rebase normalmente (sem o --onto) para dentro do ramo_destino (master) e aí vamos dar o merge no final.
+Depois para limpar a linha do tempo vamos apagar os ramos que sobraram redundantes apontando para o mesmo commit que o master.
+
+> git branch -d terceiro
+
+> git branch -d segundo
+
+Bem, há uma regra de outro em relação ao rebase! Não de rebase em commits de repositórios que vc colabora no qual há commits que seus parceiros estão trabalhando, pois pode causar muita confusão e redundância de commits com mesmo autor, hora e etc...
+
+Oque é melhor, rebase ou merge?
+
+O rebase muda a linha temporal do projeto, deixa ela linear e mais organizada, mas não é fiel à história de evolução do seu projeto.
+
+O merge pode ser mais bagunçado com vários branchs paralelos e uniões, mas, ele é fiel ao tempo e versões do seu projeto.
+
+Fica a critério da equipe de projeto adotar um ou outro. (rebase é complicado de entender)
+
+
+____________GIT ON THE SERVER
+Normalmente projetos são feitos em grupos. Neste caso, queremos que as pessoas possam afetar o projeto fazendo pulls e pushs. No entanto, ter um repositório hospedado em um computador que as vezes fica offline pode não ser uma ideia legal, pois, você pode atualizar um projeto offline e seus colegas trabalharem por cima de um projeto desatualizado. A solução para esse problema está em usar um respositório localizado em um ponto intermediário para todos os usuários, neste caso, ter um repositório na núvem é uma solução adequada para este tipo de problema. Ou seja, todos terão sempre que realizar um pull antes de um request, deste modo, sempre terão a versão mais atualizada do projeto minando a possibilidade de "bagunçar" o repositório online ao sobreescrever arquivos. Bem, isso ainda é possível mas normalmente só pode ser feito se for feito com o desejo prejudicial intencional.
+
+Para configurar o git em um server, primeiro temos que configurar quais protocolos este serve terá habilidade de lidar. Existem vantagens e desvantagens na utilização de cada protocolo. Neste ponto, não é interesse aprender esse recurso agora. Então, vamos passar para a seção sobre Usando o git em um servirdor de terceiros como por exemplo: o famoso github.
+
+Há um site onde é possível ver uma lista atualizada de serviços de hospedagem de repositórios git, como também as vantagens e desvantagens de cada um:
+https://git.wiki.kernel.org/index.php/GitHosting
+
+Então agora vamos entender como criar e usar um repositório no github:
+
+________GITHUB Account Setup and Configuration
+
+Primeira coisa a fazer é criar uma conta. Uma conta no github é gratuita:
+visite https://github.com
+1- Escolher um username
+2- colocar um email para a conta
+3- digitar uma senha para configurar a maneira segura de acesso à sua conta
+4- vai haver uma página perguntando sobre se vc quer fazer upgrade de conta e pagar por recursos extras. Mas aqui não precisamos dos rescursos de uma conta paga. Caso vc queira poderá fazer isso no futuro.
+5- o GitHub vai te mandar um email para vc verificar sua conta, então identifique esse email na sua caixa de entrada ou spam, e siga o procedimento apresentado lá (normalmente é clicar em um link)
+
+A conta free do github, permite hospedar repositórios sem limite de tamanho. Ou seja, seja qual lá for o tamanho do seu projeto o github permite que seja hospedado. A limitação da conta free é que repositórios privados, ou seja, sem acesso liberado para todos é limitado somente para 3 colaboradores. Então, se você quiser colaboradores em uma quantidade maior que 3 terá que de duas uma: fazer o upgrade de conta ou deixar seu repositório como público.
+
+A partir do ponto que sua conta está verificada, você está pronto para usar o GitHub!
+
+Clicando na logo do github esse "octocat" que está na parte superior lateral esquerda você tem acesso à sua dashboard.
+
+Até agora estamos permitidos à com repositórios através do protocolo HTTPS, autenticando com usuário e senha da nossa conta. Mas, para clonar um repositório público online para nosso diretório local não precisamos nem logar no github. A conta que criamos é útil quando realmente estamos desenvolvendo e fazemos "forks" de projetos. Por exemplo, vamos supor que tem um projeto existente por aí que vc quer começar a colaborar, então precisa dar "fork" que é criar um clone para sua conta github e fazer uma conexão entre oque vc está fazendo e o repositório original é como um ramo.
+
+Alguns servidores GIT fazem a autenticação usando SSH public keys. Bem, como pulamos a parte de protocolo você deve estar se perguntando oque é SSH. SSH é a abreviação para Secure Shell. Ele é um protocolo que permite que um computador faça "login" no outro e possa transferir e puxar arquivos de forma segura. Ele realiza a encriptação da transferência de dados, permitindo que métodos de transferência de arquivos não seguros (que não exigem protocolos de autenticação de entrada) tornem-se seguros.
+
+O método de autenticação pode ser feito através de chaves que podem ser públicas ou privadas. A chave pública é uma sequência de caracteres que permite qualquer um que tiver uma cópia desses valores possa acessar um servidor (que no caso é outro computador). Bem independente de serem publicas ou privadas, essas chaves são chamadas de SSH Keys.
+
+Bem, se formos acessar algum repositório Remoto regido pelo protocolo SSH, precisamos configurar a SSH Key da nossa conta. Não irei explicar como se gera essa chave, pois se você se encontrar nessa situação provavelmente saberá como gerar essas chaves para seu computador. Mas, para adicionar vc precisa ir nas configurações da sua conta e adicionar esse valor no campo designado.
+
+É interessante também, configurarmos informações pessoais como Nome de Usuário, Email público, algum site do nosso perfil e localização para que pessoas no quais estão trabalhando conosco possam saber quem nós somos. São informações interessantes no mundo profissional. Inclusive, sua conta no GitHub pode ser parte importante do seu currículo.
+
+________Contribuindo com o um projeto
+Quando queremos contribuir com um projeto existente no qual não temos permissão para pushs, nós podemos fazer um fork. Um fork como explicado anteriormente é uma cópia do projeto feita para você.
+Quando você fizer alguma alteração interessante ao projeto e acha que a versão original poderia se beneficiar disso, pode-se fazer um "pull request". Basicamente o caminho de projeto no github segue o seguinte:
+
+1- dê fork no projeto escolhido.
+2- crie um ramo para fazer suas alterações a partir do master
+3- faça alguns commits para aprimorar o projeto
+4- faça um push para o seu repositório online
+5- abra um pull request no github.
+6- discuta o seu pull request e opcionalmente continue a commitar 
+7- o dono do projeto pode fazer o merge com o seu commit ou fechar seu pull request.
+8- sincronize a atualização do master de volta para o seu fork
 
 
 
