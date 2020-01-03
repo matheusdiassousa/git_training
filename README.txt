@@ -38,7 +38,7 @@ Existe um comando que faz ao mesmo tempo a adição dos arquivos modificados e rea
 
 > git commit -a
 
-Ou seja, ele vai mandar os arquivos alterados para a staged area, solicitar que você digite um texto para o commit e depois de finalizar o texto e apertar enter ele vai realizar ter atualizado a versão do seu projeto.
+Ou seja, ele vai mandar os arquivos alterados para a staged area, solicitar que você digite um texto para o commit e depois de finalizar o texto e apertar enter ele vai realizar ter atualizado a versão do seu projeto. DETALHE ESSE COMANDO SÓ SERVE PARA ARQUIVOS JÁ TRACKEADOS PELO GIT. 
 
 Há um comando alternativo ao > git status < que é o > git status -s < Esse comando permite receber um informações sobre o repositório com informações mais resumidas. Os resultados em que os arquivos podem estar são:
 > M  arquivo --> Refere-se a um arquivo modificado
@@ -646,6 +646,20 @@ Quando você fizer alguma alteração interessante ao projeto e acha que a versão o
 6- discuta o seu pull request e opcionalmente continue a commitar 
 7- o dono do projeto pode fazer o merge com o seu commit ou fechar seu pull request.
 8- sincronize a atualização do master de volta para o seu fork
+
+
+
+___________MANDANDO UM REPO LOCAL PARA UM REPO REMOTO
+Caso você tenha uma repositório local... ou seja, tudo começou sendo feito na sua maquina com um >git init... e agora vc quer envia-lo para um repositório online podemos fazer o seguinte
+1 - deixamos o repositorio up to date com um ultimo commit.
+2 - criamos o repositorio remoto lá no fornecedor que queremos usar, no meu caso vou usar o github.
+//podemos checar se há um repositorio remoto atrelado ao nosso local, com:
+
+> git remote -v
+
+3 - copiamos a url desse repositorio remoto e usamos o seguinte comando:
+
+> git remote add origin remote repository URL
 
 
 

@@ -1,0 +1,42 @@
+Exercício 1 - Criando um repositorio no github e interagindo com ele
+1 - vamos criar o repositório no github para colocar os códigos que já fiz no arduino
+R - criei um repositório no github chamado /arduino_basics_algorithms
+
+2 - criei uma pasta local para guardar os arquivos desse "projeto".
+
+3 - iniciei o PowerShell dentro dela
+
+4 - copiei o endereço do repositório github
+
+5 - agora vamos dar um >git clone com este endereço e depois um > git fetch origin para trazer os arquivos online para a pasta local.
+
+6 - vamos criar os 3 arquivos comuns de um projeto git:
+	1 - README.txt
+	2 - LICENSE.txt
+	3 - .gitignore [git ignore pode ser criado com o comando > Set-Content -encoding utf8 .gitignore]
+
+7 - vamos colocar informações relevantes nos arquivos, bem o gitignore por enquanto não vou adicionar nenhuma regra. Mas, no readme vou colocar o proposito do repo e no License qual a licensa que está ativa nos algoritmos.
+
+8 - textos adicionados e arquivos selecionados. Agora vamos add e commitar tudo ao mesmo tempo com o comando:
+
+> git commit -a //o comando não está funcionando...não sei pq não deu certo...
+tive que adicionar os arquivos com > git add *
+e depois dar o commit.
+
+9 - enviei os arquivos para o github com o comando:
+
+> git push origin
+
+10 - Para olhar o status do repositório remoto uso o comando:
+
+> git remote show origin
+
+11 - O git alertou sobre um arquivo perigoso de acesso remoto ao repositório, apaguei o arquivo com 
+
+> git rm [nome do arquivo]
+
+então dei um commit e depois um push.
+
+
+
+
